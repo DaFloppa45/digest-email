@@ -7,4 +7,6 @@ class Email:
 
     def send_email(self):
         pass
-    
+
+if __name__ == "__main__":
+    pass # test code
