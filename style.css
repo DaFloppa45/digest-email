@@ -1,0 +1,19 @@
+* {
+    text-align: center;
+}
+
+div {
+    background-color:bisque;
+    width: 75%;
+}
+
+.period {
+    background-color: gray;
+    display:inline-block;
+    width:auto;
+}
+
+.events p, .finance ul, .finance, .events, #forecast{
+    margin: auto;
+    width: 75%;
+}
