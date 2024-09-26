@@ -35,7 +35,7 @@ client = gspread.authorize(creds)
 
 def get_forecast():
     # Initial Setup
-    forecast = {'city': 'Reading',
+    forecast = {'city': 'Bristol',
                 'country': 'GB',
                 'periods': []}
     
@@ -45,9 +45,10 @@ def get_forecast():
     # Pick wanted details to output for each period
     for per in obs.to_dict()['weathers']:
         entry = {}
-        entry['time'] = formatting.timeformat(per['reference_time'],'iso')
+        entry['time'] = formatting.timeformat(per['reference_time'],'iso')[11:-9]
         entry['status'] = per['detailed_status']
-        entry['temp'] = measurables.kelvin_dict_to(per['temperature'],'celsius')['temp']
+        #entry['temp'] = measurables.kelvin_dict_to(per['temperature'],'celsius')['temp']
+        entry['temp'] = measurables.kelvin_to_celsius(per['temperature']['temp'])
         entry['weather_icon'] = per['weather_icon_name']
         forecast['periods'].append(entry)
 
@@ -74,7 +75,6 @@ def get_events():
         
     return output
 
-
 def get_finance():
     finance = {}
     current_year = datetime.now().year
@@ -86,7 +86,7 @@ def get_finance():
     return finance
 
 if __name__ == "__main__":
-    print(get_finance())
+    print(get_forecast())
 
     
         

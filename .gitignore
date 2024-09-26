@@ -1,3 +1,4 @@
 .cache/
 .venv/
 finance2email-53ff109e2c6b.json
+__pycache__/
