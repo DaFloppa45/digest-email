@@ -5,6 +5,26 @@ from email.mime.text import MIMEText
 
 import de_content
 
+<<<<<<< HEAD
+=======
+# --- Email Credential Config ---
+
+import os
+import pickle
+import google.auth
+from google.auth.transport.requests import Request
+from google_auth_oauthlib.flow import InstalledAppFlow
+
+SCOPES = ['https://www.googleapis.com/auth/gmail.send']
+
+from googleapiclient.discovery import build
+from email.mime.text import MIMEText
+import base64
+
+sender_email = "matt.emaildigest@gmail.com"
+# -------------------------------
+
+>>>>>>> de38161 (email now sends | added github secrets)
 class Email:
     def __init__(self):
         self.message = MIMEMultipart("alternative")
@@ -27,7 +47,50 @@ class Email:
         return self.__generate_html() # delete after tested
 
     def send_email(self):
+<<<<<<< HEAD
         pass
+=======
+        self.format_message()
+        creds = self.__authenticate_gmail()
+        service = build('gmail', 'v1', credentials=creds)
+
+        raw_message = base64.urlsafe_b64encode(self.message.as_bytes()).decode()
+
+        try:
+            service.users().messages().send(userId='me', body={'raw': raw_message}).execute()
+            print("Email sent successfully!")
+        except Exception as e:
+            print(f"An error occurred: {e}")
+        
+    
+
+    def __authenticate_gmail(self):
+        creds = None
+        # The file token.pickle stores the user's access and refresh tokens, and is created automatically
+        # when the authorization flow completes for the first time.
+        if os.path.exists('token.pickle'):
+            with open('token.pickle', 'rb') as token:
+                creds = pickle.load(token)
+
+        # If there are no (valid) credentials available, let the user log in.
+        if not creds or not creds.valid:
+            if creds and creds.expired and creds.refresh_token:
+                creds.refresh(Request())
+            else:
+                flow = InstalledAppFlow.from_client_secrets_file(f'{os.getenv('GOOGLE_ID')}.json', SCOPES)
+                creds = flow.run_local_server(port=0)
+
+            # Save the credentials for the next run
+            with open('token.pickle', 'wb') as token:
+                pickle.dump(creds, token)
+
+        return creds
+
+
+# If modifying these SCOPES, delete the file token.pickle.
+
+
+>>>>>>> de38161 (email now sends | added github secrets)
 
     def __generate_plaintext(self):
         intro_text = """\

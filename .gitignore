@@ -1,5 +1,6 @@
 .cache/
 .venv/
-finance2email-53ff109e2c6b.json
+finance_credentials.json
+google_credentials.json
 __pycache__/
 html_message.html
