@@ -22,6 +22,16 @@ icloud_client = caldav.DAVClient(
     password='reim-wvbd-kynv-dsqj'
 )
 # ---------------------
+# --- Google Sheets Config ---
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
+
+# Define the scope
+scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+
+# Authenticate using the credentials file
+creds = ServiceAccountCredentials.from_json_keyfile_name("finance2email-53ff109e2c6b.json", scope)
+client = gspread.authorize(creds)
 
 def get_forecast():
     # Initial Setup
@@ -66,10 +76,17 @@ def get_events():
 
 
 def get_finance():
-    pass
+    finance = {}
+    current_year = datetime.now().year
+    current_month = datetime.now().strftime("%B")
+    sheet = client.open(f"Personal Finance {current_year}").worksheet(current_month)
+    finance['net_worth'] = sheet.cell(2,4).value
+    finance['budget_used'] = sheet.cell(16, 4).value
+    finance['balance'] = sheet.cell(25,5).value
+    return finance
 
 if __name__ == "__main__":
-    print(get_events())
+    print(get_finance())
 
     
         
