@@ -5,8 +5,6 @@ from email.mime.text import MIMEText
 
 import de_content
 
-<<<<<<< HEAD
-=======
 # --- Email Credential Config ---
 
 import os
@@ -24,12 +22,11 @@ import base64
 sender_email = "matt.emaildigest@gmail.com"
 # -------------------------------
 
->>>>>>> de38161 (email now sends | added github secrets)
 class Email:
     def __init__(self):
         self.message = MIMEMultipart("alternative")
-        self.message["From"] = None # TODO
-        self.message["To"] = "m.latinomain@icloud.com" # TODO
+        self.message["From"] = 'matt.emaildigest@gmail.com'
+        self.message["To"] = "m.latinomain@icloud.com"
         weekday_name = datetime.now().strftime("%A")
         date_num = datetime.now().day
         month_name = datetime.now().strftime("%B")
@@ -44,12 +41,11 @@ class Email:
     def format_message(self):
         part1 = MIMEText(self.__generate_plaintext(), "plain")
         part2 = MIMEText(self.__generate_html(), 'html')
-        return self.__generate_html() # delete after tested
+        
+        self.message.attach(part1)
+        self.message.attach(part2)
 
     def send_email(self):
-<<<<<<< HEAD
-        pass
-=======
         self.format_message()
         creds = self.__authenticate_gmail()
         service = build('gmail', 'v1', credentials=creds)
@@ -77,7 +73,7 @@ class Email:
             if creds and creds.expired and creds.refresh_token:
                 creds.refresh(Request())
             else:
-                flow = InstalledAppFlow.from_client_secrets_file(f'{os.getenv('GOOGLE_ID')}.json', SCOPES)
+                flow = InstalledAppFlow.from_client_secrets_file(f'google_credentials.json', SCOPES)
                 creds = flow.run_local_server(port=0)
 
             # Save the credentials for the next run
@@ -90,7 +86,6 @@ class Email:
 # If modifying these SCOPES, delete the file token.pickle.
 
 
->>>>>>> de38161 (email now sends | added github secrets)
 
     def __generate_plaintext(self):
         intro_text = """\
@@ -192,5 +187,4 @@ Balance Left: {self.data['finance']['balance']}\n"""
 
 if __name__ == "__main__":
     email_msg = Email()
-    with open("html_message.html", 'w') as file:
-        file.write(email_msg.format_message())
+    email_msg.send_email()

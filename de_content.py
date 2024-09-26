@@ -30,7 +30,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
 
 # Authenticate using the credentials file
-creds = ServiceAccountCredentials.from_json_keyfile_name("finance2email-53ff109e2c6b.json", scope)
+creds = ServiceAccountCredentials.from_json_keyfile_name("finance_credentials.json", scope)
 client = gspread.authorize(creds)
 
 def get_forecast():
